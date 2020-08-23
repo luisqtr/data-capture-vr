@@ -69,6 +69,14 @@ namespace Assets.LSL4Unity.Scripts.AbstractInlets
 			//By default, do nothing.
 		}
 
+		/// <summary>
+		/// Override this method in the subclass to specify what should happen when an Inlet is found().
+		/// </summary>
+		protected virtual void AdditionalOnInletFound(liblsl.StreamInfo info) 
+		{
+			//By default, do nothing.
+		}
+
 		IEnumerator ResolveExpectedStream()
 		{
 			var results = resolver.results();
@@ -80,6 +88,8 @@ namespace Assets.LSL4Unity.Scripts.AbstractInlets
 			inlet = new liblsl.StreamInlet(results[0]);
 
 			expectedChannels = inlet.info().channel_count();
+			
+			AdditionalOnInletFound(inlet.info());
 			
 			yield return null;
 		}

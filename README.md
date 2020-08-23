@@ -48,16 +48,24 @@ This module contains the interface that receives all the data sent from the Ocul
 
 ## Data Streaming for Oculus Quest
 
+All LSL Stream Outlets can send Rotation as Quaternion (4 float) + Rotation as Euler (3 float) + Position as Position (3 float). The variables to send are configured from the inspector in the GameObject LSL_Manager.
+
+The configuration of the Streams have `Type=DAMI_DSV_SU`, and the Stream `Name` is defined as follows:
+
 **CURRENTLY**
-Among the intended signals to collect:
-- HMD position (*x, y, z*)
-- HMD rotation (*roll, pitch, yaw*)
-- Controllers position (*x, y, z*)
-- Controllers rotation (*roll, pitch, yaw*)
+- HMD rotation + position | `HMD`
+- Left Controller rotation + position | `LeftController`
+- Right Controller rotation + position | `RightController`
 
 **FUTURE**
 - Hands interactions (when active instead of controllers)
 - Audio from Microphone 
+
+## Known issues
+
+In the receiver scene, the LSL Continuous Resolver does not find the Oculus Quest streaming unless a breakpoint to slow down code execution. 
+
+`TODO: See issues on LSL with regard to TimeSynch and ContinuousResolver`
 
 ### Acknowledgements
 - [LabStreamingLayer](https://github.com/sccn/labstreaminglayer)

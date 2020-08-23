@@ -930,28 +930,7 @@ public class liblsl
 
 	class dll
 	{
-
-// Some libfiles were changed because the distinction is done in the Import Settings in Unity Inspector
-#if (UNITY_EDITOR_WIN && UNITY_EDITOR_64)
-		const string libname = "liblsl";
-#elif UNITY_EDITOR_WIN
-		const string libname = "liblsl";
-#elif UNITY_STANDALONE_WIN
-		const string libname =  "liblsl";
-#elif (UNITY_EDITOR_LINUX && UNITY_EDITOR_64) || UNITY_STANDALONE_LINUX
-	   const string libname = "liblsl64.so";
-#elif UNITY_EDITOR_LINUX
-	   const string libname = "liblsl.so";
-#elif UNITY_STANDALONE_LINUX
-	   const string libname =  "liblsl.so";
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-	   //32-bit dylib no longer provided.
-	   const string libname = "liblsl64";
-#elif UNITY_STANDALONE_OSX
-	   const string libname = "liblsl";
-#elif UNITY_ANDROID
-	   const string libname = "liblsl";
-#endif
+        const string libname = "liblsl";
 
         [DllImport(libname, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, ExactSpelling = true)]
 		public static extern int lsl_protocol_version();

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Example_XRIT/Scenes/WorldInteractionDemo.unity
-    guid: cd5458b6a8920b348b4fbd0dd1cd06f4
+    path: Assets/DataStreamingVR/Scenes/DataStreamingLSL.unity
+    guid: 5242e08bed5cf694abe61fa5db594f63
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: cd3dccd78a829d24cbce94f9baa3d74f,
       type: 2}

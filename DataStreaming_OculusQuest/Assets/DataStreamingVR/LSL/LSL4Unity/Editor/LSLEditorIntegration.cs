@@ -9,8 +9,10 @@ namespace Assets.LSL4Unity.EditorExtensions
     public class LSLEditorIntegration
     {
         public static readonly string wikiURL = "https://github.com/xfleckx/LSL4Unity/wiki";
-        public static readonly string lib64Name = "liblsl64";
-        public static readonly string lib32Name = "liblsl32";
+
+        public static readonly string folder64Name = "x86_64";
+        public static readonly string folder32Name = "x86";
+        public static readonly string libName = "liblsl";
         
         public const string DLL_ENDING = ".dll";
         public const string SO_ENDING = ".so";
@@ -35,8 +37,7 @@ namespace Assets.LSL4Unity.EditorExtensions
         {
             string assetDirectory = Application.dataPath;
 
-            bool lib64Available = false;
-            bool lib32Available = false;
+            bool libAvailable = false;
             bool apiAvailable = false;
 
 
@@ -46,18 +47,21 @@ namespace Assets.LSL4Unity.EditorExtensions
 
             var root = results.Single();
 
-            lib32Available = File.Exists(Path.Combine(root, Path.Combine(libFolder, lib32Name + DLL_ENDING)));
-            lib64Available = File.Exists(Path.Combine(root, Path.Combine(libFolder, lib64Name + DLL_ENDING)));
-
-            lib32Available &= File.Exists(Path.Combine(root, Path.Combine(libFolder, lib32Name + SO_ENDING)));
-            lib64Available &= File.Exists(Path.Combine(root, Path.Combine(libFolder, lib64Name + SO_ENDING)));
-
-            lib32Available &= File.Exists(Path.Combine(root, Path.Combine(libFolder, lib32Name + BUNDLE_ENDING)));
-            lib64Available &= File.Exists(Path.Combine(root, Path.Combine(libFolder, lib64Name + BUNDLE_ENDING)));
+#if (UNITY_EDITOR_WIN && UNITY_EDITOR_64)
+            libAvailable = File.Exists(Path.Combine(root, Path.Combine(libFolder, Path.Combine(folder64Name, libName + DLL_ENDING))));
+#elif UNITY_EDITOR_WIN
+            libAvailable = File.Exists(Path.Combine(root, Path.Combine(libFolder, Path.Combine(folder32Name, libName + DLL_ENDING))));
+#elif UNITY_EDITOR_LINUX && UNITY_EDITOR_64
+            libAvailable = File.Exists(Path.Combine(root, Path.Combine(libFolder, Path.Combine(folder64Name, libName + SO_ENDING))));
+#elif UNITY_EDITOR_LINUX
+            libAvailable = File.Exists(Path.Combine(root, Path.Combine(libFolder, Path.Combine(folder32Name, libName + SO_ENDING))));
+#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            libAvailable = File.Exists(Path.Combine(root, Path.Combine(libFolder, libName + BUNDLE_ENDING)));
+#endif
 
             apiAvailable = File.Exists(Path.Combine(root, wrapperFileName));
 
-            if ((lib64Available || lib32Available) && apiAvailable)
+            if (libAvailable && apiAvailable)
                 return true;
 
             Debug.LogError("LabStreamingLayer libraries not available! See " + wikiURL + " for installation instructions");
